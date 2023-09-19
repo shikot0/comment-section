@@ -7,7 +7,7 @@ const nextConfig = {
     },
     images: {
       // unoptimized: process.env.NODE_ENV === 'production',
-      domains: ['', '/', 'localhost', '192.168.0.191', 'hostname'],
+      domains: ['', '/', 'localhost', '192.168.0.191', 'hostname', 'https://comment-section-blue.vercel.app'],
     },
 
     webpack: (config) => {
