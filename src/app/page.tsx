@@ -1,95 +1,64 @@
+'use client';
+import { ReplyButton, SendButton } from './Components/Buttons/Buttons';
 import Image from 'next/image'
-import styles from './page.module.css'
+import Loader from './Components/Loader/Loader';
+import { BASE_URL } from '../../statics';
+import {Comment, NewComment} from './Components/Posts/Posts';
+import { useState, useEffect, FormEvent } from 'react';
+import {v4} from 'uuid';
+import './globals.css';
+
+
 
 export default function Home() {
+  const [comments, setComments] = useState([]);
+
+
+  async function getPosts(setter: Function) {
+    const res = await fetch(`${BASE_URL}/api/posts`, {
+      cache: 'no-store'
+    });
+    const data = await res.json();
+    setter(data.comments);
+    // console.log(data)
+  }
+
+  useEffect(() => {
+    getPosts(setComments);
+  }, []);
+
+
+
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      {/* <section id="comments-section">
+        {comments.length > 0 ?
+          comments.map(comment => {
+            return <Comment key={v4()} comment={comment} />
+          })
+        : <Loader />}
+        <div className="new-post-wrapper">
+          <div className="profile-picture-wrapper">
+            <Image src={`${BASE_URL}/api/users/profile-picture/juliusomo`} fill alt="juliusomo"/>
+          </div>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      </section> */}
+        {comments.length > 0 ?
+          <section id="comments-section">
+            {comments.map(comment => {
+              return <Comment key={v4()} comment={comment} getPosts={getPosts} setComments={setComments}/>
+            })}
+            {/* <div className="new-post-wrapper">
+              <div className="profile-picture-wrapper">
+                <Image src={`${BASE_URL}/api/users/profile-picture/juliusomo`} fill alt="juliusomo"/>
+              </div>
+              <textarea className="comment-input" value={newComment.text} onChange={(e) => updateNewComment(e)} placeholder="Add a comment..."></textarea>
+              <SendButton callback={addPost} />
+            </div> */}
+            <NewComment getPosts={getPosts} setComments={setComments} />
+          </section>
+        : <Loader />}
     </main>
   )
 }

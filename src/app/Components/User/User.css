@@ -1,0 +1,33 @@
+.profile-picture-wrapper {
+    position: relative;
+    width: clamp(1.25rem, 2vw, 1.75rem);
+    height: clamp(1.25rem, 2vw, 1.75rem);
+    border-radius: 10rem;
+    background-color: hsl(239, 57%, 85%);
+    overflow: hidden;
+}
+.username {
+    font-size: clamp(.8rem, 2vw, 1rem);
+    color: hsl(212, 24%, 26%);
+    font-weight: 500;
+}
+.you-badge {
+    display: block;
+    background-color: hsl(238, 40%, 52%);
+    color: white;
+    padding: .15rem .4rem;
+    border-radius: .1rem;
+}
+
+.profile-picture-skeleton {
+    width: clamp(1.25rem, 2vw, 1.75rem);
+    height: clamp(1.25rem, 2vw, 1.75rem);
+    border-radius: 10rem;
+    background-color: hsl(239, 57%, 85%);
+}
+.username-skeleton {
+    height: clamp(.9rem, 2vw, 1.1rem);
+    width: 4rem;
+    border-radius: .25rem;
+    background-image: linear-gradient(to right, hsl(223, 19%, 93%), hsl(239, 57%, 85%))
+}

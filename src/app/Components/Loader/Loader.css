@@ -1,0 +1,33 @@
+.loader-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loader {
+    border-radius: 100%;
+    border: .2rem solid transparent;
+    border-top: .2rem solid hsl(238, 40%, 52%);
+    border-bottom: .2rem solid hsl(238, 40%, 52%);
+    min-height: 1.5rem;
+    min-width: 1.5rem; 
+    aspect-ratio: 1/1;
+    /* animation: rotate 2s linear infinite forwards; */
+    animation: rotate 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite forwards;
+}
+
+@keyframes rotate {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: .8;
+        rotate: 360deg;
+    }
+    100% {
+        rotate: 0deg;
+    }
+}
