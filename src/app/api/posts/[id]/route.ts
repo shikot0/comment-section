@@ -45,7 +45,9 @@ export async function DELETE(req: Request, {params}: Props) {
 export async function PATCH(req: Request, {params}: Props) {
     try {
         const {id} = params;
-        const {text} = await req.json();
+        // const {text} = await req.json();
+        const text = await req.json();
+        // console.log(text)
 
         if(!isValidObjectId(id) || !id) {
             return new Response(JSON.stringify({msg: 'Invalid ID', succeeded: false}), {

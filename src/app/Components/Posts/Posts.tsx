@@ -23,9 +23,9 @@ type CommentProps = {
     getPosts: Function,
     setComments: Function
 }
-type EditedComment = {
-  text: string
-}
+// type EditedComment = {
+//   text: string
+// }
 
 
 export function Comment({comment, getPosts, setComments}: CommentProps) {
@@ -33,9 +33,11 @@ export function Comment({comment, getPosts, setComments}: CommentProps) {
     const [replies, setReplies] = useState([]);
     const [replyWrapperVisible, setReplyWrapperVisible] = useState<boolean>(false);
     const [isUser, setIsUser] = useState<boolean | undefined>(undefined);
-    const [editedComment, setEditedComment] = useState<EditedComment>({
-      text: comment.text
-    })
+    // const [editedComment, setEditedComment] = useState<EditedComment>({
+    //   text: comment.text
+    // })
+    // const [editedComment, setEditedComment] = useState<string>(comment.text)
+    const [editedComment, setEditedComment] = useState<string>('')
     const [editMode, setEditMode] = useState<boolean>(false);
     // console.log(comment)
     function calculateDifference(date: Date) {
@@ -92,14 +94,15 @@ export function Comment({comment, getPosts, setComments}: CommentProps) {
     }
 
     function editComment(e: FormEvent<HTMLDivElement>) {
-      const target = e.target as HTMLInputElement;
-      setEditedComment(prev => {
-        return {...prev, text: target?.value}
-      })
+      const target = e.target as HTMLDivElement;
+      // setEditedComment(prev => {
+      //   return {...prev, text: target?.value}
+      // })
+      setEditedComment(target?.innerText)
     }
 
     function updateComment(id: string) {
-      if(editedComment.text === '') return;
+      if(editedComment === '') return;
 
       fetch(`${BASE_URL}/api/posts/${id}`, {
         method: 'PATCH',
@@ -153,25 +156,30 @@ export function Comment({comment, getPosts, setComments}: CommentProps) {
                   </>
                 : null}
                 {isUser === false ? <ReplyButton callback={() => setReplyWrapperVisible(prev => !prev)} /> : null}
-              </div>
-            </div>
-            <div className="comment-text" onChange={e => editComment(e)} contentEditable={editMode}>{text}</div>
-            <div className="bottom-button-section">
-              <Score score={score} postId={_id} />
-              <div className="buttons-section bottom">
-                {isUser ? 
-                  <>
-                    <DeleteButton callback={deletePost} params={[_id]} /> 
-                    <EditButton callback={() => {setEditMode(prev => !prev)}}/>
-                  </>
-                : null}
-                {isUser === false ? <ReplyButton callback={() => setReplyWrapperVisible(prev => !prev)} /> : null}
-                
                 {editMode ?
                   <SendButton callback={updateComment} params={[_id]} text='Update' /> 
                 : null}
               </div>
             </div>
+            {/* <div className="comment-text" onChange={e => editComment(e)} contentEditable={editMode}>{editedComment}</div> */}
+            <div className="comment-text" onInput={e => editComment(e)} contentEditable={editMode}>{comment.text}</div>
+            {/* <div className="comment-text" onInput={e => editComment(e)} contentEditable={editMode}>{editedComment}</div> */}
+            {/* <div className="comment-text" onInput={e => editComment(e)} contentEditable={editMode}>{comment.text}</div> */}
+            <div className="bottom-button-section">
+              <Score score={score} postId={_id} />
+              <div className="buttons-section bottom">
+                {isUser ?   
+                  <>
+                    <DeleteButton callback={deletePost} params={[_id]} /> 
+                    <EditButton callback={() => {setEditMode(prev => !prev)}}/>
+                  </>  
+                : null}
+                {isUser === false ? <ReplyButton callback={() => setReplyWrapperVisible(prev => !prev)} /> : null}
+                {editMode ?
+                  <SendButton callback={updateComment} params={[_id]} text='Update' /> 
+                : null}
+              </div>
+            </div>   
           </div>
         </div>
 
